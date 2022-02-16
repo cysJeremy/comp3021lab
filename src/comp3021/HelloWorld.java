@@ -1,4 +1,4 @@
-package comp3021lab1;
+package comp3021;
 
 public class HelloWorld {
 

@@ -1,8 +1,10 @@
 package base;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
-public class Folder {
+public class Folder implements Comparable<Folder>{
 
 	private ArrayList<Note> notes;
 	private String name;
@@ -39,5 +41,48 @@ public class Folder {
 		}
 
 		return name + ":" + nText + ":" + nImage;
+	}
+
+	@Override
+	public int compareTo(Folder f){
+		return this.name.compareTo(f.name);
+	}
+
+	public void sortNotes(){
+		Collections.sort(notes);
+	}
+
+	public List<Note> searchNotes(String keywords){
+		List<Note> result = (ArrayList<Note>) this.notes.clone();
+		String[] keys = keywords.toLowerCase().split(" ");
+		ArrayList<String> Orkey= new ArrayList<String>();
+		ArrayList<Note> fNote = new ArrayList<Note>();
+		int j;
+		for(int i = 0; i < keys.length; ++i){
+			Orkey.clear();
+			fNote.clear();
+			while((i+2) < keys.length && keys[i+1].equals("or")){
+				Orkey.add(keys[i]);
+				i = i + 2;
+			}
+			Orkey.add(keys[i]);
+			for(Note e: result){
+				for(j = 0; j < Orkey.size(); ++j){
+					if(e.getTitle().toLowerCase().contains(Orkey.get(j)))
+						break;
+					if(e instanceof TextNote){
+						TextNote t = (TextNote) e;
+						if(t.getContent().toLowerCase().contains(Orkey.get(j))){
+							break;
+						}
+					}
+				}
+				if(j == Orkey.size())
+					fNote.add(e);
+			}
+			result.removeAll(fNote);
+		}
+
+		return result;
 	}
 }
