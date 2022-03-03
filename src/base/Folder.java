@@ -1,11 +1,14 @@
 package base;
 
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class Folder implements Comparable<Folder>{
+public class Folder implements Comparable<Folder>, java.io.Serializable{
 
+	private static final long serialVersionUID = 2L;
 	private ArrayList<Note> notes;
 	private String name;
 
@@ -84,5 +87,19 @@ public class Folder implements Comparable<Folder>{
 		}
 
 		return result;
+	}
+
+	public boolean save(String file){
+		FileOutputStream fos = null;
+		ObjectOutputStream out = null;
+		try {
+			fos = new FileOutputStream(file);
+			out = new ObjectOutputStream(fos);
+			out.writeObject(this);
+			out.close();
+		} catch (Exception e) {
+		    return false;
+		}
+		return true;
 	}
 }

@@ -4,6 +4,7 @@ import java.io.File;
 
 public class ImageNote extends Note {
 
+	private static final long serialVersionUID = 4L;
 	private File image;
 
 	public ImageNote(String title){
