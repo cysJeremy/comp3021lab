@@ -38,10 +38,20 @@ public class TextNote extends Note {
 	public void exportTextToFile(String pathFolder) {
         //TODO
 		File file;
-		if(pathFolder != "")
+		if(pathFolder != ""){
 			file = new File( pathFolder + File.separator + this.getTitle().replace(' ', '_') + ".txt");
-		else
+		}
+		else{
 			file = new File( this.getTitle().replace(' ', '_') + ".txt");
+			if(!file.exists()){
+				file.getParentFile().mkdir();
+				try{
+					file.createNewFile();
+				}catch (IOException e){
+					e.printStackTrace();
+				}
+			}
+		}
 		// Todo
 		BufferedWriter bw = null;
 		FileWriter fw = null;
