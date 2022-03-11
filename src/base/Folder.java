@@ -8,7 +8,7 @@ import java.util.List;
 
 public class Folder implements Comparable<Folder>, java.io.Serializable{
 
-	private static final long serialVersionUID = 2L;
+	private static final long serialVersionUID = 1L;
 	private ArrayList<Note> notes;
 	private String name;
 
@@ -21,6 +21,18 @@ public class Folder implements Comparable<Folder>, java.io.Serializable{
 		notes.add(note);
 	}
 
+	public boolean removeNote(Note note){
+		return notes.remove(note);
+	}
+
+	public boolean removeNote(String noteTitle){
+		for(Note n: notes){
+			if(n.getTitle().equals(noteTitle)){
+				return notes.remove(n);
+			}
+		}
+		return false;
+	}
 	public String getName(){
 		return name;
 	}

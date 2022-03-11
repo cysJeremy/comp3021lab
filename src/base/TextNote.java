@@ -14,7 +14,7 @@ import java.io.FileWriter;
 
 public class TextNote extends Note {
 
-	private static final long serialVersionUID = 3L;
+	private static final long serialVersionUID = 1L;
 	private String content;
 
 	public TextNote(String title){
@@ -35,6 +35,9 @@ public class TextNote extends Note {
 		return content;
 	}
 
+	public void setContent(String content){
+		this.content = content;
+	}
 	public void exportTextToFile(String pathFolder) {
         //TODO
 		File file;

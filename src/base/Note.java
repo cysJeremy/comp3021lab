@@ -6,7 +6,7 @@ import java.util.Date;
 
 public class Note implements Comparable<Note>, java.io.Serializable{
 
-	private static final long serialVersionUID = 5L;
+	private static final long serialVersionUID = 1L;
 
 	private Date date;
 	private String title;
