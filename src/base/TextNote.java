@@ -45,7 +45,7 @@ public class TextNote extends Note {
 			file = new File( pathFolder + File.separator + this.getTitle().replace(' ', '_') + ".txt");
 		}
 		else{
-			file = new File( this.getTitle().replace(' ', '_') + ".txt");
+			file = new File("." + File.separator + this.getTitle().replace(' ', '_') + ".txt");
 			if(!file.exists()){
 				file.getParentFile().mkdir();
 				try{
@@ -73,7 +73,6 @@ public class TextNote extends Note {
 		String result = "";
 		// TODO
 		FileInputStream fis = null;
-	    ObjectInputStream in = null;
 	    BufferedReader br = null;
 	    String line;
 	    try{
