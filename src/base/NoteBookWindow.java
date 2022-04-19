@@ -1,7 +1,10 @@
 package base;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -20,6 +23,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
@@ -29,15 +33,14 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.stage.FileChooser;
 
 /**
  *
@@ -49,8 +52,12 @@ import javafx.stage.Stage;
  * @author valerio
  *
  */
-public class NoteBookWindow extends Application {
+public class NoteBookWindow extends Application implements Serializable{
 
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = 1L;
 	/**
 	 * TextArea containing the note
 	 */
@@ -113,7 +120,7 @@ public class NoteBookWindow extends Application {
 		hbox.setPadding(new Insets(15, 12, 15, 12));
 		hbox.setSpacing(10); // Gap between nodes
 
-		Button buttonLoad = new Button("Load");
+		Button buttonLoad = new Button("Load from File");
 		buttonLoad.setPrefSize(100, 20);
 		buttonLoad.setOnAction(new EventHandler<ActionEvent>(){
 			@Override
@@ -132,7 +139,7 @@ public class NoteBookWindow extends Application {
 			}
 		});
 		//buttonLoad.setDisable(true);
-		Button buttonSave = new Button("Save");
+		Button buttonSave = new Button("Save to File");
 		buttonSave.setPrefSize(100, 20);
 		buttonSave.setOnAction(new EventHandler<ActionEvent>(){
 			@Override
@@ -163,6 +170,8 @@ public class NoteBookWindow extends Application {
 			}
 		});
 		//buttonSave.setDisable(true);
+
+
 
 		Label labelSearch = new Label("Search:");
 		TextField textSearch = new TextField();
@@ -201,11 +210,10 @@ public class NoteBookWindow extends Application {
 		vbox.setPadding(new Insets(10)); // Set all sides to 10
 		vbox.setSpacing(8); // Gap between nodes
 
-		// TODO: This line is a fake folder list. We should display the folders in noteBook variable! Replace this with your implementation
-		//foldersComboBox.getItems().addAll("FOLDER NAME 1", "FOLDER NAME 2", "FOLDER NAME 3");
 		for(Folder f: this.noteBook.getFolders()){
 			foldersComboBox.getItems().add(f.getName());
 		}
+		//foldersComboBox.getItems().addAll("FOLDER NAME 1", "FOLDER NAME 2", "FOLDER NAME 3");
 
 		foldersComboBox.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Object>() {
 			@Override
@@ -244,9 +252,9 @@ public class NoteBookWindow extends Application {
 						break;
 					}
 				}
-
 			}
 		});
+
 		HBox hbox = new HBox();
 		Button buttonFolder = new Button("Add a Folder");
 		buttonFolder.setOnAction(new EventHandler<ActionEvent>(){
@@ -334,10 +342,6 @@ public class NoteBookWindow extends Application {
 		vbox.getChildren().add(new Label("Choose note title"));
 		vbox.getChildren().add(titleslistView);
 		vbox.getChildren().add(buttonNote);
-		/*vbox.getChildren().add(new Label("Choose folder: "));
-		vbox.getChildren().add(foldersComboBox);
-		vbox.getChildren().add(new Label("Choose note title"));
-		vbox.getChildren().add(titleslistView);*/
 
 		return vbox;
 	}
@@ -357,7 +361,6 @@ public class NoteBookWindow extends Application {
 
 		// TODO populate the list object with all the TextNote titles of the
 		// currentFolder
-
 		for(Folder f: this.noteBook.getFolders()){
 			if(f.getName().equals(this.currentFolder)){
 				if(currentSearch == ""){
@@ -386,13 +389,12 @@ public class NoteBookWindow extends Application {
 		grid.setHgap(10);
 		grid.setVgap(10);
 		grid.setPadding(new Insets(10, 10, 10, 10));
-		textAreaNote.setEditable(false);
+		textAreaNote.setEditable(true);
 		textAreaNote.setMaxSize(450, 400);
 		textAreaNote.setWrapText(true);
 		textAreaNote.setPrefWidth(450);
 		textAreaNote.setPrefHeight(400);
 		// 0 0 is the position in the grid
-		//grid.add(textAreaNote, 0, 0);
 
 		ImageView saveView = new ImageView(new Image(new File("save.png").toURI().toString()));
 		saveView.setFitHeight(18);
@@ -472,6 +474,7 @@ public class NoteBookWindow extends Application {
 		hbox.getChildren().addAll(saveView,buttonSaveNote,buttonDeleteNote);
 		grid.add(hbox, 0, 0);
 		grid.add(textAreaNote, 0, 1);
+
 		return grid;
 	}
 
@@ -482,7 +485,6 @@ public class NoteBookWindow extends Application {
 	    	updateListView();
 	    }
 	}
-
 	private void loadNoteBook() {
 		NoteBook nb = new NoteBook();
 		nb.createTextNote("COMP3021", "COMP3021 syllabus", "Be able to implement object-oriented concepts in Java.test");
