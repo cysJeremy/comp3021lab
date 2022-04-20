@@ -431,7 +431,10 @@ public class NoteBookWindow extends Application implements Serializable{
 				}
 			}
 		});
-
+		ImageView deleteView = new ImageView(new Image(new File("delete.png").toURI().toString()));
+		deleteView.setFitHeight(18);
+		deleteView.setFitWidth(18);
+		deleteView.setPreserveRatio(true);
 		Button buttonDeleteNote = new Button("Delete Note");
 		buttonDeleteNote.setOnAction(new EventHandler<ActionEvent>(){
 			@Override
@@ -471,7 +474,7 @@ public class NoteBookWindow extends Application implements Serializable{
 
 		HBox hbox = new HBox();
 		hbox.setSpacing(10);
-		hbox.getChildren().addAll(saveView,buttonSaveNote,buttonDeleteNote);
+		hbox.getChildren().addAll(saveView,buttonSaveNote,deleteView,buttonDeleteNote);
 		grid.add(hbox, 0, 0);
 		grid.add(textAreaNote, 0, 1);
 
