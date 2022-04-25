@@ -1,4 +1,4 @@
-package lab8;
+package lab9_n;
 
 public class RacyCounter {
 
